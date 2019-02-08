@@ -9,6 +9,11 @@ using RequestSystem.Models;
 
 namespace RequestSystem.Controllers
 {
+    public class Statuses
+    {
+        public string Name { get; set; }
+    }
+
     public class NotesController : Controller
     {
         private readonly RequestSystemContext _context;
@@ -43,8 +48,9 @@ namespace RequestSystem.Controllers
         }
 
         // GET: Notes/Create
-        public IActionResult Create()
+        public IActionResult Create(string Status)
         {
+            ViewBag.CreateDate = DateTime.Now.ToString("g");
             return View();
         }
 
@@ -72,11 +78,33 @@ namespace RequestSystem.Controllers
                 return NotFound();
             }
 
+            // if (_context.Note.Where(d => d.Id.Equals()))
+            //     {
+            //         
+            //     }
+
             var note = await _context.Note.FindAsync(id);
+            ViewData["CurrentStatus"] = note.Status;
             if (note == null)
             {
                 return NotFound();
             }
+
+            if (note.Status == "Открыта")
+            {
+                ViewBag.Statuseslist2 = (new string[] {"Решена"});
+            }
+
+            List<Statuses> statuseslist = new List<Statuses>
+            {
+                new Statuses {Name="Открыта"},
+                new Statuses {Name="Решена"},
+                new Statuses {Name="Возврат"},
+                new Statuses {Name="Закрыта"},
+            };
+            ViewBag.Statuseslist = new SelectList(statuseslist, "Statuses");
+            //ViewBag.Statuseslist2 = (new string[] { Statuses.Equals.ToString , "Galaxy 7 Edge", "HTC 10", "Honor 5X" });
+
             return View(note);
         }
 

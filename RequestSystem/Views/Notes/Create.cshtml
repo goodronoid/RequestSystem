@@ -1,12 +1,13 @@
 ﻿@model RequestSystem.Models.Note
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Создание";
+
 }
 
-<h2>Create</h2>
+<h2>@ViewBag.CreateDate</h2>
 
-<h4>Note</h4>
+<!--<h4>Note</h4>-->
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,12 +25,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
+                <input asp-for="CreateDate" class="form-control" value="@ViewBag.CreateDate" />
+                <!--
+                <input asp-for="CreateDate" class="form-control" value="@ViewBag.CreateDate"  />
+                -->
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
+                <input asp-for="Status" class="form-control" value="Новый" />
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -29,9 +29,14 @@
                 <span asp-validation-for="CreateDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
+                @Html.DropDownList("Status", new SelectList (ViewBag.Statuseslist2), "Выберите новый статус заявки")  Сейчас: @ViewData["CurrentStatus"]
+
+
+
+                <!--<label asp-for="Status" class="control-label"></label>
+    <input asp-for="Status" class="form-control" />
+    <select asp-for="Status" asp-items="SelectList" />
+    <span asp-validation-for="Status" class="text-danger"></span>-->
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />

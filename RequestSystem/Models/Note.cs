@@ -6,7 +6,7 @@ namespace RequestSystem.Models
 {
     public class Note
     {
-        //[Display(Name = "Номер")]
+        [Display(Name = "Номер")]
         public int Id { get; set; }
 
         [Display(Name = "Название")]
@@ -22,4 +22,11 @@ namespace RequestSystem.Models
         [Display(Name = "Статус")]
         public string Status { get; set; }
 }
+    public enum MyEnum
+    {
+        [System.ComponentModel.Description("FirstValue")]
+        FirstValue,
+        [System.ComponentModel.Description("SecondValue test")]
+        SecondValue
+    }
 }
