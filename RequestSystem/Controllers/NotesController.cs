@@ -85,25 +85,41 @@ namespace RequestSystem.Controllers
 
             var note = await _context.Note.FindAsync(id);
             ViewData["CurrentStatus"] = note.Status;
+
             if (note == null)
             {
                 return NotFound();
             }
 
-            if (note.Status == "Открыта")
+            else if (note.Status == "Открыта")
             {
-                ViewBag.Statuseslist2 = (new string[] {"Решена"});
+                ViewBag.Statuseslist2 = (new string[] {"Открыта", "Решена"});
             }
 
-            List<Statuses> statuseslist = new List<Statuses>
+            else if (note.Status == "Решена")
             {
-                new Statuses {Name="Открыта"},
-                new Statuses {Name="Решена"},
-                new Statuses {Name="Возврат"},
-                new Statuses {Name="Закрыта"},
-            };
-            ViewBag.Statuseslist = new SelectList(statuseslist, "Statuses");
-            //ViewBag.Statuseslist2 = (new string[] { Statuses.Equals.ToString , "Galaxy 7 Edge", "HTC 10", "Honor 5X" });
+                ViewBag.Statuseslist2 = (new string[] {"Решена", "Возврат",  "Закрыта" });
+            }
+
+            else if (note.Status == "Возврат")
+            {
+                ViewBag.Statuseslist2 = (new string[] {"Возврат", "Решена" });
+            }
+
+            else if (note.Status == "Закрыта")
+            {
+                ViewBag.Statuseslist2 = (new string[] { "Закрыта" });
+            }
+
+            // List<Statuses> statuseslist = new List<Statuses>
+            // {
+            //     new Statuses {Name="Открыта"},
+            //     new Statuses {Name="Решена"},
+            //     new Statuses {Name="Возврат"},
+            //     new Statuses {Name="Закрыта"},
+            // };
+            // ViewBag.Statuseslist = new SelectList(statuseslist, "Statuses");
+            // //ViewBag.Statuseslist2 = (new string[] { Statuses.Equals.ToString , "Galaxy 7 Edge", "HTC 10", "Honor 5X" });
 
             return View(note);
         }
