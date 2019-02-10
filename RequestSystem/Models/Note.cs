@@ -6,6 +6,9 @@ namespace RequestSystem.Models
 {
     public class Note
     {
+        //DateTime myDateTime = DateTime.Now;
+        //public string CreateDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
         [Display(Name = "Номер")]
         public int Id { get; set; }
 
@@ -18,15 +21,17 @@ namespace RequestSystem.Models
         [Display(Name = "Дата создания")]
         [DataType(DataType.DateTime)]
         public DateTime CreateDate { get; set; }
+        //[DataType(DataType.Text)]
+        //public string CreateDate { get; set; }
 
-        [Display(Name = "Статус")]
+        [Display(Name = "Статус: ")]
         public string Status { get; set; }
-}
-    // public enum MyEnum
-    // {
-    //     [System.ComponentModel.Description("FirstValue")]
-    //     FirstValue,
-    //     [System.ComponentModel.Description("SecondValue test")]
-    //     SecondValue
-    // }
+
+        [Display(Name = "Комментарий")]
+        public string History { get; set; }
+
+        // [Display(Name = "Текущее время")]
+        // //[DataType(DataType.DateTime)]
+        // public DateTime History { get; set; }
+    }
 }

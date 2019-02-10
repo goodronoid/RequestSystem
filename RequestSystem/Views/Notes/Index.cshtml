@@ -5,12 +5,42 @@
 }
 
 <h2>
-    <a asp-action="Create">Создать</a>
+    <a asp-action="Create" class="btn btn-default">Создать</a>
 </h2>
 
-<p>
-    
-</p>
+@using (Html.BeginForm())
+{
+
+    <div class="father">
+        <div class="son">
+            <select class="form-control" name="searchString">
+                <option value="а">Все</option>
+                <option>Открыта</option>
+                <option>Решена</option>
+                <option>Возврат</option>
+                <option>Закрыта</option>
+            </select>
+            <!--серчстринг = @ViewBag.searchString старт = @ViewBag.start энд = @ViewBag.end
+        <input type="submit" value="Search" />-->
+        </div>
+        <div class="son">
+            @Html.TextBox("start", null, new { @class = "form-control datepicker", @type = "date" })
+            <!--<div class="col-md-8">
+    </div>-->
+        </div>
+        <div class="son">
+            @Html.TextBox("end", null, new { @class = "form-control datepicker", @type = "date" })
+            <!--<div class="col-md-8">
+    </div>-->
+        </div>
+        <div class="son">
+            <input type="submit" value="Отбор" class="btn btn-default" />
+            <!--<div class="col-md-offset-2 col-md-10">
+    </div>-->
+        </div>
+    </div>
+
+}
 <table class="table">
     <thead>
         <tr>
@@ -33,29 +63,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Просмотр</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreateDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-default">Редактировать</a> 
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-default">Просмотр</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-default">Удалить</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

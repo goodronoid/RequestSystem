@@ -4,9 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Редактирование</h2>
 
-<h4>Note</h4>
+<h4>Заявка № @Html.DisplayFor(model => model.Id) от @Html.DisplayFor(model => model.CreateDate) </h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,39 +15,34 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" required/>
+                <input asp-for="Title" class="form-control" required readonly />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" required/>
+                <input asp-for="Description" class="form-control" required readonly />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" required/>
-                <span asp-validation-for="CreateDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Status" class="control-label" required></label>
-                @Html.DropDownList("Status", new SelectList(ViewBag.Statuseslist2), @ViewData["CurrentStatus"])  Сейчас: @ViewData["CurrentStatus"]
+                <select class="form-control" @Html.DropDownList("Status", new SelectList(ViewBag.Statuseslist2), @ViewData["CurrentStatus"])</select>
                 <span asp-validation-for="Status" class="text-danger"></span>
-
-
-                <!--
-    <input asp-for="Status" class="form-control" />
-    <select asp-for="Status" asp-items="SelectList" />
-    -->
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <h4>Ваш комментарий:</h4>
+                <textarea type="text" name="History" class="form-control" required value=""></textarea>
+                <span asp-validation-for="History" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-default" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">К списку</a>
 </div>
 
 @section Scripts {

@@ -4,12 +4,18 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<!--<h2>Details</h2>-->
 
 <div>
-    <h4>Note</h4>
+    <h2>Подробные сведения</h2>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Title)
         </dt>
@@ -34,9 +40,15 @@
         <dd>
             @Html.DisplayFor(model => model.Status)
         </dd>
+        <dt>
+            <h7>История изменений:</h7>
+        </dt>
+        <dd>
+            <textarea asp-for="History" class="form-control" required rows="10" value="" readonly></textarea>
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">К списку</a>
 </div>

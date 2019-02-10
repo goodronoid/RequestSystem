@@ -9,11 +9,7 @@ using RequestSystem.Models;
 
 namespace RequestSystem.Controllers
 {
-    public class Statuses
-    {
-        public string Name { get; set; }
-    }
-
+    
     public class NotesController : Controller
     {
         private readonly RequestSystemContext _context;
@@ -24,9 +20,22 @@ namespace RequestSystem.Controllers
         }
 
         // GET: Notes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, DateTime start, DateTime end)
         {
-            return View(await _context.Note.ToListAsync());
+            ViewBag.start = start;
+            ViewBag.end = end;
+            ViewBag.searchString = searchString;
+            
+            if (searchString is null)
+            {searchString = "а";}
+
+            if (start == null)
+            {start = new DateTime(0002, 1, 01, 1, 01, 01, 01);}
+
+            if (end == DateTime.MinValue.Date)
+            { end = DateTime.MaxValue.Date; }
+
+            return View(await _context.Note.Where(s => s.Status.Contains(searchString) && s.CreateDate >= start && s.CreateDate <= end).OrderBy(x => x.Id).ToListAsync()); // && s.CreateDate >= start && s.CreateDate <= end).ToListAsync());
         }
 
         // GET: Notes/Details/5
@@ -48,9 +57,8 @@ namespace RequestSystem.Controllers
         }
 
         // GET: Notes/Create
-        public IActionResult Create(string Status)
+        public IActionResult Create(string CreateDate2)
         {
-            ViewBag.CreateDate = DateTime.Now.ToString("g");
             return View();
         }
 
@@ -59,10 +67,13 @@ namespace RequestSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreateDate,Status")] Note note)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,CreateDate,Status,History")] Note note)
         {
             if (ModelState.IsValid)
             {
+                note.CreateDate = DateTime.Now;
+                note.History = DateTime.Now + " | " + note.Status + " | " + note.History + "\n\n";
+
                 _context.Add(note);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -84,12 +95,15 @@ namespace RequestSystem.Controllers
             //     }
 
             var note = await _context.Note.FindAsync(id);
-            ViewData["CurrentStatus"] = note.Status;
+            //ViewData["CurrentStatus"] = note.Status;
+            //DateTime.ToString("yyyy-MM-dd HH:mm:ss")
+            //note.CreateDate = note.CreateDate.ToString();
 
             if (note == null)
             {
                 return NotFound();
             }
+            
 
             else if (note.Status == "Открыта")
             {
@@ -111,16 +125,6 @@ namespace RequestSystem.Controllers
                 ViewBag.Statuseslist2 = (new string[] { "Закрыта" });
             }
 
-            // List<Statuses> statuseslist = new List<Statuses>
-            // {
-            //     new Statuses {Name="Открыта"},
-            //     new Statuses {Name="Решена"},
-            //     new Statuses {Name="Возврат"},
-            //     new Statuses {Name="Закрыта"},
-            // };
-            // ViewBag.Statuseslist = new SelectList(statuseslist, "Statuses");
-            // //ViewBag.Statuseslist2 = (new string[] { Statuses.Equals.ToString , "Galaxy 7 Edge", "HTC 10", "Honor 5X" });
-
             return View(note);
         }
 
@@ -129,7 +133,7 @@ namespace RequestSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreateDate,Status")] Note note)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Status,History")] Note note)
         {
             if (id != note.Id)
             {
@@ -138,6 +142,13 @@ namespace RequestSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                var oldhistory = _context.Note.Where(p => p.Id == note.Id).AsNoTracking().FirstOrDefault();
+                if (oldhistory != null)
+                {
+                    note.History = oldhistory.History + DateTime.Now + " | " + note.Status + " | " + note.History + "\n\n";
+
+                }
+                note.CreateDate = _context.Note.Where(p => p.Id == note.Id).AsNoTracking().FirstOrDefault().CreateDate;
                 try
                 {
                     _context.Update(note);
